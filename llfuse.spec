@@ -5,25 +5,27 @@
 # Source0 file verified with key 0xD113FCAC3C4E599F (Nikolaus@rath.org)
 #
 Name     : llfuse
-Version  : 1.3.5
-Release  : 4
-URL      : https://files.pythonhosted.org/packages/19/e7/26335a22c776c763d280c2985963cf2f31484b7d05b5d74a08433d08201d/llfuse-1.3.5.tar.bz2
-Source0  : https://files.pythonhosted.org/packages/19/e7/26335a22c776c763d280c2985963cf2f31484b7d05b5d74a08433d08201d/llfuse-1.3.5.tar.bz2
-Source99 : https://files.pythonhosted.org/packages/19/e7/26335a22c776c763d280c2985963cf2f31484b7d05b5d74a08433d08201d/llfuse-1.3.5.tar.bz2.asc
+Version  : 1.3.6
+Release  : 5
+URL      : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2
+Source0  : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2
+Source1 : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2.asc
 Summary  : Python bindings for the low-level FUSE API
 Group    : Development/Tools
 License  : LGPL-2.0
 Requires: llfuse-license = %{version}-%{release}
 Requires: llfuse-python = %{version}-%{release}
 Requires: llfuse-python3 = %{version}-%{release}
+Requires: contextlib2
 BuildRequires : buildreq-distutils3
+BuildRequires : contextlib2
 BuildRequires : pkgconfig(fuse)
 
 %description
 ..
 NOTE: We cannot use sophisticated ReST syntax (like
 e.g. :file:`foo`) here because this isn't rendered correctly
-by PyPi and/or BitBucket.
+by PyPi.
 
 %package license
 Summary: license components for the llfuse package.
@@ -52,17 +54,24 @@ python3 components for the llfuse package.
 
 
 %prep
-%setup -q -n llfuse-1.3.5
+%setup -q -n llfuse-1.3.6
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1541106123
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1570211366
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/llfuse
 cp LICENSE %{buildroot}/usr/share/package-licenses/llfuse/LICENSE
