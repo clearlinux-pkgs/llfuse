@@ -1,2 +1,3 @@
 1.3.6
 pkgconfig(fuse)
+python3-dev

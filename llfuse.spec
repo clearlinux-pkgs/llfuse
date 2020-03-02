@@ -6,10 +6,10 @@
 #
 Name     : llfuse
 Version  : 1.3.6
-Release  : 7
+Release  : 8
 URL      : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2
 Source0  : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2
-Source1 : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2.asc
+Source1  : https://files.pythonhosted.org/packages/75/b4/5248459ec0e7e1608814915479cb13e5baf89034b572e3d74d5c9219dd31/llfuse-1.3.6.tar.bz2.asc
 Summary  : Python bindings for the low-level FUSE API
 Group    : Development/Tools
 License  : LGPL-2.0
@@ -20,12 +20,60 @@ Requires: contextlib2
 BuildRequires : buildreq-distutils3
 BuildRequires : contextlib2
 BuildRequires : pkgconfig(fuse)
+BuildRequires : python3-dev
 
 %description
 ..
-NOTE: We cannot use sophisticated ReST syntax (like
-e.g. :file:`foo`) here because this isn't rendered correctly
-by PyPi.
+  NOTE: We cannot use sophisticated ReST syntax (like
+  e.g. :file:`foo`) here because this isn't rendered correctly
+  by PyPi.
+
+The Python-LLFUSE Module
+========================
+
+
+.. start-intro
+
+**Warning - no longer maintained**
+
+Python-LLFUSE is no longer actively maintained. Unless you are stuck
+with Python 2.x or libfuse 2.x, we recommended to use the pyfuse3_
+module instead.
+
+Python-LLFUSE is a set of Python bindings for the low level FUSE_
+API. It requires at least FUSE 2.8.0 and supports both Python 2.x and
+3.x. Like FUSE itself, Python-LLFUSE is developed for Linux systems,
+but it should be compatible with OS-X, FreeBSD and NetBSD as well.
+
+Python-LLFUSE releases can be downloaded from PyPi_. The documentation
+can be `read online`__ and is also included in the ``doc/html``
+directory of the Python-LLFUSE tarball.
+
+
+.. _pyfuse3: https://github.com/libfuse/pyfuse3
+
+Getting Help
+------------
+
+Please report any bugs on the `issue tracker`_. For discussion and
+questions, please use the general `FUSE mailing list`_. A searchable
+`mailing list archive`_ is kindly provided by Gmane_.
+
+
+Contributing
+------------
+
+The Python-LLFUSE source code is available on GitHub_.
+
+
+.. __: http://www.rath.org/llfuse-docs/
+.. _FUSE: http://github.com/libfuse/libfuse
+.. _FUSE mailing list: https://lists.sourceforge.net/lists/listinfo/fuse-devel
+.. _issue tracker: https://github.com/python-llfuse/python-llfuse/issues
+.. _mailing list archive: http://dir.gmane.org/gmane.comp.file-systems.fuse.devel
+.. _Gmane: http://www.gmane.org/
+.. _PyPi: https://pypi.python.org/pypi/llfuse/
+.. _GitHub: https://github.com/python-llfuse/python-llfuse
 
 %package license
 Summary: license components for the llfuse package.
@@ -48,6 +96,7 @@ python components for the llfuse package.
 Summary: python3 components for the llfuse package.
 Group: Default
 Requires: python3-core
+Provides: pypi(llfuse)
 
 %description python3
 python3 components for the llfuse package.
@@ -55,13 +104,15 @@ python3 components for the llfuse package.
 
 %prep
 %setup -q -n llfuse-1.3.6
+cd %{_builddir}/llfuse-1.3.6
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570211366
+export SOURCE_DATE_EPOCH=1583171735
+# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -74,7 +125,7 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/llfuse
-cp LICENSE %{buildroot}/usr/share/package-licenses/llfuse/LICENSE
+cp %{_builddir}/llfuse-1.3.6/LICENSE %{buildroot}/usr/share/package-licenses/llfuse/a942fd86faab764d64db3aacfdc7af285c7d15ba
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -85,7 +136,7 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/llfuse/LICENSE
+/usr/share/package-licenses/llfuse/a942fd86faab764d64db3aacfdc7af285c7d15ba
 
 %files python
 %defattr(-,root,root,-)
