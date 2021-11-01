@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x243ACFA951F78E01 (tw-public@gmx.de)
 #
 Name     : llfuse
-Version  : 1.3.8
-Release  : 23
-URL      : https://files.pythonhosted.org/packages/8f/73/d35aaf5f650250756b40c1e718ee6a2d552700729476dee24c9837608e1b/llfuse-1.3.8.tar.gz
-Source0  : https://files.pythonhosted.org/packages/8f/73/d35aaf5f650250756b40c1e718ee6a2d552700729476dee24c9837608e1b/llfuse-1.3.8.tar.gz
-Source1  : https://files.pythonhosted.org/packages/8f/73/d35aaf5f650250756b40c1e718ee6a2d552700729476dee24c9837608e1b/llfuse-1.3.8.tar.gz.asc
+Version  : 1.4.1
+Release  : 24
+URL      : https://files.pythonhosted.org/packages/b1/d4/44443fbaac6d5b878da99e7c0948ee93c7934fa3b00e48c5363823b583d0/llfuse-1.4.1.tar.gz
+Source0  : https://files.pythonhosted.org/packages/b1/d4/44443fbaac6d5b878da99e7c0948ee93c7934fa3b00e48c5363823b583d0/llfuse-1.4.1.tar.gz
+Source1  : https://files.pythonhosted.org/packages/b1/d4/44443fbaac6d5b878da99e7c0948ee93c7934fa3b00e48c5363823b583d0/llfuse-1.4.1.tar.gz.asc
 Summary  : Python bindings for the low-level FUSE API
 Group    : Development/Tools
 License  : LGPL-2.0
@@ -54,15 +54,15 @@ python3 components for the llfuse package.
 
 
 %prep
-%setup -q -n llfuse-1.3.8
-cd %{_builddir}/llfuse-1.3.8
+%setup -q -n llfuse-1.4.1
+cd %{_builddir}/llfuse-1.4.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1608009877
+export SOURCE_DATE_EPOCH=1635751280
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$FFLAGS -fno-lto "
@@ -75,7 +75,7 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/llfuse
-cp %{_builddir}/llfuse-1.3.8/LICENSE %{buildroot}/usr/share/package-licenses/llfuse/a942fd86faab764d64db3aacfdc7af285c7d15ba
+cp %{_builddir}/llfuse-1.4.1/LICENSE %{buildroot}/usr/share/package-licenses/llfuse/a942fd86faab764d64db3aacfdc7af285c7d15ba
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
